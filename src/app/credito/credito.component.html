@@ -1,0 +1,107 @@
+<div
+  style="min-height: 500px; width: 100%; align-items: center; padding-top: 50px"
+>
+  <mat-card style="width: 70%; margin: auto; padding-top: 25px">
+    <mat-card-title style="padding: 10px; text-align: center"
+      >Formulario de productos BancoMock</mat-card-title
+    >
+    <mat-card-content
+      style="
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-left: 25px;
+        margin-bottom: 30px;
+      "
+    >
+      <form (ngSubmit)="onSubmit()" [formGroup]="mainForm">
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Documento</mat-label>
+          <input formControlName="id" matInput />
+        </mat-form-field>
+        <div
+          style="width: 100%; align-items: center; text-align: center"
+          *ngIf="!this.user"
+        >
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            style="width: 70%; margin: auto"
+            [disabled]="
+              (mainForm.value.id == null || mainForm.value.id == '') && showId
+                ? true
+                : false
+            "
+            (click)="validateDocument()"
+          >
+            Validar
+          </button>
+        </div>
+
+        <div
+          style="
+            width: 100%;
+            align-items: center;
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+          "
+          *ngIf="productList.length > 0"
+        >
+          <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>Seleccione Servicio</mat-label>
+            <mat-select
+              formControlName="serviceOption"
+              (selectionChange)="serviceOption = $event.value"
+            >
+              <mat-option
+                *ngFor="let product of productList"
+                [value]="product.key"
+              >
+                {{ product.key }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          style="
+            width: 100%;
+            align-items: center;
+            text-align: center;
+            padding-top: 30px;
+          "
+          *ngIf="mainForm.value.serviceOption"
+        >
+          <mat-label
+            >Ingrese motivo de la peticion para el producto
+            {{ mainForm.value.serviceOption ?? "error" }}</mat-label
+          >
+          <mat-form-field style="width: 80%; margin: auto">
+            <mat-label>Motivo de la peticion</mat-label>
+            <textarea
+              formControlName="reason"
+              matInput
+              placeholder="Motivo de la peticion"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <div
+          style="width: 100%; align-items: center; text-align: center"
+          *ngIf="mainForm.value.serviceOption"
+        >
+          <button
+            mat-raised-button
+            color="primary"
+            style="width: 70%; margin: auto"
+            [disabled]="
+              this.mainForm.value.serviceOption == null ||
+              this.mainForm.value.reason == null
+            "
+          >
+            Enviar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
